@@ -28,7 +28,7 @@
 
 
 
-const initialData = {
+export const initialDataMock = {
   tasks: {
     'task-1': { id: 'task-1', content: 'Take out the garbage' },
     'task-2': { id: 'task-2', content: 'Watch my favorite show' },
@@ -39,8 +39,8 @@ const initialData = {
     'column-1': {
       id: 'column-1',
       title: 'To do',
-      taskIds: [],
-      // taskIds: ['task-1', 'task-2', 'task-3', 'task-4'],
+      // taskIds: [],
+      taskIds: ['task-1', 'task-2', 'task-3', 'task-4'],
     },
     'column-2': {
       id: 'column-2',
@@ -54,6 +54,12 @@ const initialData = {
     },
   },
   columnOrder: ['column-1', 'column-2', 'column-3'],
+};
+
+const initialData = {
+  tasks: {},
+  columns: {},
+  columnOrder: [],
 };
 
 export default initialData;
