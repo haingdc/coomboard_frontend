@@ -7,15 +7,19 @@
     "@testing-library/jest-dom": "^5.15.0",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
+    "axios": "^0.24.0",
+    "cors": "^2.8.5",
     "react": "^17.0.2",
     "react-beautiful-dnd": "^13.1.0",
     "react-dom": "^17.0.2",
     "react-scripts": "4.0.3",
+    "sharethis-reactjs": "^1.6.0",
     "styled-components": "^5.3.3",
     "web-vitals": "^1.1.2"
   },
   "scripts": {
     "start": "BROWSER=none react-scripts start",
+    "start-browser": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
