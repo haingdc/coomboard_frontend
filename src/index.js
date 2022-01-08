@@ -37,7 +37,6 @@ import initialData, { initialDataMock } from "./initial-data";
 import Column from './column';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import styled from "styled-components";
-import {StickyShareButtons} from 'sharethis-reactjs';
 
 const axios = require('axios').default;
 
@@ -54,30 +53,34 @@ class InnerList extends React.PureComponent {
 }
 
 class App extends React.Component {
-  state = initialDataMock;
+  state = initialData;
+  // state = initialDataMock;
 
   async componentDidMount() {
-    // try {
-    //   const responses = await Promise.all([
-    //     axios.get('https://coomboard.herokuapp.com/collection/column_order'),
-    //     axios.get('https://coomboard.herokuapp.com/collection/columns'),
-    //     axios.get('https://coomboard.herokuapp.com/collection/tasks'),
-    //   ]);
-    //   console.log(responses)
-    //   const columnOrder = responses[0].data.map(col => col._id);
-    //   const columns = Object.fromEntries(responses[1].data.map((col) => [col._id, { id: col._id, title: col.title, taskIds: col.taskIds }]));
-    //   const tasks = {};
-    //   const newState = {
-    //     ...this.state,
-    //     tasks,
-    //     columns,
-    //     columnOrder,
-    //     hasData: true,
-    //   };
-    //   this.setState(newState);
-    // } catch(err) {
-    //   console.log(err);
-    // }
+    try {
+      const responses = await Promise.all([
+        axios.get('https://coomboard.herokuapp.com/collection/column_order'),
+        axios.get('https://coomboard.herokuapp.com/collection/columns'),
+        axios.get('https://coomboard.herokuapp.com/collection/tasks'),
+      ]);
+      console.log(responses)
+      const columnOrder = responses[0].data.map(col => col._id);
+      const columns = Object.fromEntries(responses[1].data.map((col) => [col._id, { id: col._id, title: col.title, taskIds: col.taskIds }]));
+      const tasks = responses[2].data.reduce(function(acc, e) {
+        acc[e._id] = { id: e._id, content: e.content };
+        return acc;
+      }, {});
+      const newState = {
+        ...this.state,
+        tasks,
+        columns,
+        columnOrder,
+        hasData: true,
+      };
+      this.setState(newState);
+    } catch(err) {
+      console.log(err);
+    }
   }
 
   onDragEnd = result => {
@@ -165,34 +168,6 @@ class App extends React.Component {
     // }
     return (
       <div>
-        {/* <div class="sharethis-sticky-share-buttons"></div> */}
-        <StickyShareButtons
-          config={{
-            alignment: 'left',    // alignment of buttons (left, right)
-            color: 'social',      // set the color of buttons (social, white)
-            enabled: true,        // show/hide buttons (true, false)
-            font_size: 16,        // font size for the buttons
-            hide_desktop: false,  // hide buttons on desktop (true, false)
-            labels: 'cta',     // button labels (cta, counts, null)
-            language: 'en',       // which language to use (see LANGUAGES)
-            min_count: 0,         // hide react counts less than min_count (INTEGER)
-            networks: [           // which networks to include (see SHARING NETWORKS)
-              'facebook',
-              'weibo',
-              'sharethis',
-              'twitter',
-              'email',
-              'linkedin',
-            ],
-            padding: 12,          // padding within buttons (INTEGER)
-            radius: 4,            // the corner radius on each button (INTEGER)
-            show_total: false,     // show/hide the total share count (true, false)
-            show_mobile: true,    // show/hide the buttons on mobile (true, false)
-            show_toggle: true,    // show/hide the toggle buttons (true, false)
-            size: 48,             // the size of each button (INTEGER)
-            top: 160,             // offset in pixels from the top of the page
-          }}
-        />
         <DragDropContext onDragEnd={this.onDragEnd}>
           <Droppable
             droppableId="all-columns"
